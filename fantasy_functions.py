@@ -27,15 +27,15 @@ def get_fantasy_teams(league_id, season):
 
     data = pd.DataFrame(data, columns=['ID', 'Abbreviation', 'Location', 'Nickname', 'Team Name', 'Logo URL'])
 
-    wr.s3.to_csv(df=data, path='s3://espn-files/nfl/Fantasy-Team-Metadata.csv', index=False, s3_additional_kwargs={'ACL': 'public-read'})
+    data.to_csv('output/Fantasy-Team-Metadata.csv', index=False)
     #data.to_excel(output_path + 'Fantasy-Team-Metadata.xlsx')
     #print(data)
 
 def get_fantasy_stats(league_id, season):
     #test_player_id = pd.read_excel('output/nfl/'+ str(season) + '/manual_input/Eligibility checks ' + str(season) + '.xlsx', sheet_name='Sheet1')
-    test_player_id = wr.s3.read_excel('s3://web.mldrs.nl/NFL/2024/Eligibility checks 2024.xlsx')
-    el_df = pd.DataFrame(test_player_id)
-    eligible = el_df[el_df.Checked == "V"]['ID'].values.tolist()
+    #test_player_id = wr.s3.read_excel('s3://web.mldrs.nl/NFL/2024/Eligibility checks 2024.xlsx')
+    #el_df = pd.DataFrame(test_player_id)
+    #eligible = el_df[el_df.Checked == "V"]['ID'].values.tolist()
 
     p = []
     for week in range(0,18):
@@ -64,7 +64,7 @@ def get_fantasy_stats(league_id, season):
 
         for player in d['players']:
             id = player.get('id')
-            if id in eligible:
+            if 1==1:
             #if id in [4430191, 4569618]:
                 #print(id)
                 fteam = player.get('onTeamId')
@@ -92,7 +92,7 @@ def get_fantasy_stats(league_id, season):
     p.loc[p['Stat Type'] == 1, 'Stat Type'] = "Projected"
     #print(p)
     #p.to_excel(output_path + 'Fantasy-stats-new.xlsx')
-    wr.s3.to_csv(df=p, path='s3://espn-files/nfl/Fantasy-stats-new.csv', index=False, s3_additional_kwargs={'ACL': 'public-read'})
+    p.to_csv('output/Fantasy-stats-new.csv', index=False)
 
 def get_fantasy_team_stats(league_id, season):
     slotcodes = {
@@ -152,6 +152,6 @@ def get_fantasy_team_stats(league_id, season):
     merged = data.join(team_data.set_index('Team ID'), on='Team')
     merged = merged[['Week', 'Team', 'Team Full Name', 'Player ID', 'Player', 'Slot', 'Pos', 'Status']]
     
-    wr.s3.to_csv(df=merged, path='s3://espn-files/nfl/Fantasy-stats-within-team.csv', index=False, s3_additional_kwargs={'ACL': 'public-read'})
+    merged.to_csv('output/Fantasy-stats-within-team.csv', index=False)
     #merged.to_excel(output_path + 'Fantasy-stats-within-teams.xlsx')
     #print(merged)

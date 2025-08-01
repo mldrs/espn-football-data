@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 import re
 import functions as fn
+import fantasy_functions as ffn
 
 def get_espn_data(event):
 
@@ -25,14 +26,14 @@ def get_espn_data(event):
     print(str(datetime.now()) + ': Updating rosters...')
     fn.get_rosters(sport, league, season)
     
-    #if sport == 'baseball':
-    #    print(str(datetime.now()) + ': Updating stats leaders...')
-    #    fn.get_stats_leaders(sport, league, season)
-    #elif sport == 'football':
-    #    league_id = event['league_id']
-    #    ffn.get_fantasy_teams(league_id, season)
-    #    ffn.get_fantasy_stats(league_id, season)
-    #    ffn.get_fantasy_team_stats(league_id, season)
+    if sport == 'baseball':
+        print(str(datetime.now()) + ': Updating stats leaders...')
+        fn.get_stats_leaders(sport, league, season)
+    elif sport == 'football':
+        league_id = event['league_id']
+        ffn.get_fantasy_teams(league_id, season)
+        ffn.get_fantasy_stats(league_id, season)
+        ffn.get_fantasy_team_stats(league_id, season)
 
 get_espn_data(
     {
