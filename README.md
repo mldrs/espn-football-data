@@ -7,7 +7,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/mldrs/fantasy-baseball-stats.git
+git clone https://github.com/mldrs/espn-football-data.git
 ```
 
 ### 2. Create and Activate a Virtual Environment
